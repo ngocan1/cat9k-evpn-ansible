@@ -1,0 +1,19 @@
+# vrf_cli:
+#    - blue
+#    
+# vlan_cli:
+#    - 201
+#    - 202
+#    - 902
+#
+# svi_cli:
+#    - 201
+#    - 202
+#    - 902
+#
+# l2vpn_evi_cli:
+#    - 201
+#    - 202
+#   
+# ovrl_intf_cli:
+#    - Loopback12

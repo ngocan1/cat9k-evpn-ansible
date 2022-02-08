@@ -1,0 +1,62 @@
+{#
+This module is configuring, deleting or modifing nvi config.
+If action is not set in the configurations, it is "add" by default.
+
+Mutable paramiters:
+- member vni // mandatory
+
+Immutable paramiters:
+- source interface // mandatory
+- host-reachability protocol // mandatory
+#}
+
+#jinja2: lstrip_blocks: "True", trim_blocks: "True"
+
+{% set vni_list = [] %}
+
+{% if vlan_cli is defined %}
+    {% for vlan in vlan_cli %}
+        {% set vni_list = vni_list.append(vlans[vlan].vni|int) %}
+    {% endfor %}
+{% endif %}
+
+{% if nve_interfaces is defined %}
+    {% for interface in nve_interfaces %}
+        interface nve{{ interface }}
+        no ip address
+        source-interface {{ nve_interfaces[interface].source_interface }}
+        host-reachability protocol bgp
+        {# L2VNI configuration #}
+        {% if nve_interfaces[interface].vni.l2vni is defined %}
+            {% for l2vni in nve_interfaces[interface].vni.l2vni %}
+                {% if l2vni in vni_list or vlan_cli is not defined %}
+                    {% set action = nve_interfaces[interface].vni.l2vni[l2vni].action | default('add') %}
+                    {% if action == 'delete' %}
+                        no member vni {{ l2vni }}
+                    {% elif action == 'add' %}
+                        {% if nve_interfaces[interface].vni.l2vni[l2vni].replication_type == 'ingress-replication' %}
+                            member vni {{ l2vni }} {{ nve_interfaces[interface].vni.l2vni[l2vni].replication_type }} 
+                        {% elif nve_interfaces[interface].vni.l2vni[l2vni].replication_type == 'static' %}
+                            member vni {{ l2vni }} mcast-group {{ nve_interfaces[interface].vni.l2vni[l2vni].replication_mcast }}
+                        {% endif %}
+                    {% endif %}
+                {% endif %}    
+            {% endfor %}
+        {% endif %}
+
+        {# L3VNI configuration #}
+        {% if nve_interfaces[interface].vni.l3vni is defined %}
+            {% for l3vni in nve_interfaces[interface].vni.l3vni %}
+                {% if l3vni in vni_list or vlan_cli is not defined %}
+                    {% set action = nve_interfaces[interface].vni.l3vni[l3vni].action | default('add') %}
+                    {% if action == 'delete' %}
+                        no member vni {{ l3vni }}
+                    {% elif action == 'add' %}
+                        member vni {{ l3vni }} vrf {{ nve_interfaces[interface].vni.l3vni[l3vni].vrf }}
+                    {% endif %}
+                {% endif %} 
+            {% endfor %}
+        {% endif %}
+
+    {% endfor %}
+{% endif %}

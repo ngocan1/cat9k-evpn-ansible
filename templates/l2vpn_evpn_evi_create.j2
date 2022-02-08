@@ -1,0 +1,82 @@
+{#
+This module is configuring, deleting or modifing l2vpn evpn evi configuration.
+If action is not set in the configurations, it is "add" by default.
+
+Mutable paramiters:
+- evi add/delete //mandatory
+- replication type // optional
+- default-gateway advertisement enable/disable // optional
+- auto-route-target enable/disable // optional
+- RT import/export add/delete // optional
+
+Immutable paramiters:
+- evi type // mandatory
+- encapsulation type // mandatory
+#}
+
+#jinja2: lstrip_blocks: "True", trim_blocks: "True"
+{% if l2vpn_evi is defined %}
+    {% for evi in l2vpn_evi %}
+        {% if ( (l2vpn_evi_cli is defined and evi in l2vpn_evi_cli) or (l2vpn_evi_cli is not defined) ) %}
+            {# Checking an action for evi#}
+            {% set action = l2vpn_evi[evi].action | default ('add') %}
+            {% if action == 'delete' %}
+                no l2vpn evpn instance {{ evi }}
+            {% elif action == 'add' %}
+                l2vpn evpn instance {{ evi }} {{ l2vpn_evi[evi].type }}
+                encapsulation {{ l2vpn_evi[evi].encapsulation }}
+
+                {# Checking an action for replication type #}
+                {% if l2vpn_evi[evi].replication_type is defined %}
+                    {% set action = l2vpn_evi[evi].replication_type.action | default ('add') %}
+                    {% if action == 'delete' %}
+                        no replication-type {{ l2vpn_evi[evi].replication_type }}
+                    {% elif action == 'add' %}
+                        replication-type {{ l2vpn_evi[evi].replication_type }}
+                    {% endif %}
+                {% endif %}
+
+                {# Default-gateway advertisement definition check #}
+                {% if l2vpn_evi[evi].default_gateway is defined %}
+                    {# Check an action for default-gateway advertisement. Should be enable/disable #}
+                    {% set action = l2vpn_evi[evi].default_gateway %}
+                    default-gateway advertise {{action}}
+                {% endif %}
+
+                {# auto-route-target enable/disable. Should be enable/disable#}
+                {% if l2vpn_evi[evi].auto_route_target is defined %}
+                    {% if l2vpn_evi[evi].auto_route_target == 'enable' %}
+                        auto-route-target
+                    {% elif l2vpn_evi[evi].auto_route_target == 'disable' %}
+                        no auto-route-target
+                    {% endif %}
+                {% endif %}
+
+                {# RT import/export for EVI section #}
+                {# RT import section #}
+                {% if l2vpn_evi[evi].rt_import is defined %}
+                    {% for rti in l2vpn_evi[evi].rt_import.rts %}
+                        {% set action = l2vpn_evi[evi].rt_import.action | default ('add') %}
+                        {% if action == 'delete' %}
+                                no route-target import {{ rti }}
+                        {% elif action == 'add' %}
+                                route-target import {{ rti }}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                {# RT export section #}
+                {% if l2vpn_evi[evi].rt_export is defined %}
+                    {% for rte in l2vpn_evi[evi].rt_export.rts %}
+                        {% set action = l2vpn_evi[evi].rt_export.action | default ('add') %}
+                        {% if action == 'delete' %}
+                                no route-target export {{ rte }}
+                        {% elif action == 'add' %}
+                                route-target export {{ rte }}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+{% endif %}

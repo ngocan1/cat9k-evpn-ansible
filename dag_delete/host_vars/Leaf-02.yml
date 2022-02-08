@@ -1,0 +1,7 @@
+access_interfaces:
+  trunks:
+     GigabitEthernet1/0/7:
+       action: delete
+       vlans:
+         - 101
+         - 102

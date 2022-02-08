@@ -1,0 +1,51 @@
+ansible_connection: ansible.netcommon.network_cli
+ansible_network_os: cisco.ios.ios
+ansible_python_interpreter: "python"
+ansible_user: cisco
+ansible_ssh_pass: cisco
+
+vrfs:
+  blue:
+    action: delete
+
+vlans:
+#vrf blue vlans
+ 201:
+  action: delete
+
+ 202:
+  action: delete
+
+ 902:
+  action: delete
+
+svis:
+#vrf green svi's
+ 201:
+  action: delete
+
+ 202:
+  action: delete
+
+ 902:
+  action: delete
+
+l2vpn_evi:
+  201:
+    action: delete
+
+  202:
+    action: delete
+
+nve_interfaces:
+  1:
+    source_interface: 'Loopback1'
+    vni:
+      l2vni:
+        10201:
+          action: delete
+        10202:
+          action: delete
+      l3vni:
+        50902:
+          action: delete
