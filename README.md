@@ -6,6 +6,10 @@ Each directory has scripts for specific steps for EVPN provisioning:
 * **dag_add** DAG (Distributed Anycast Gateway) provisioning
 * **dag_delete** DAG selective unprovisioning
 
+# Topology #
+
+<img width="737" alt="ansible_lab_topology" src="https://user-images.githubusercontent.com/99259970/155182099-7e5d98f4-8e4e-4b01-96a8-30b9badc5be2.png">
+
 # Playbooks description #
 
 Each directory may has several playbook. Usually there are 4 of them:
@@ -40,7 +44,7 @@ This configuration will be applied to all nodes in group.
 
 File **inventory.yaml** has an information about switch ip addresses, hostnames and groups that it belongs to.
 
-## Observe changes on the switch ##
+# Observe changes on the switch #
 
 For checking the configuration that is deployed by Ansible on the switch next configuration could be used.
 
