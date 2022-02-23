@@ -8,7 +8,7 @@ In this directory there is a playbook for unprovisioning DAG (Distributed Anycas
 - for partial/full deleting DAG related config
 
 
-**OVERLAY CONFIGURATION**
+# OVERLAY CONFIGURATION #
 
 Overlay configuration is mostly the same on all VTEPs. There are some exceptions like unique interfaces/loopbacks or additonal configuration because of device role (Border) or design (for example CGW). For DAG EVPN/NVE related config is the same on all VTEPs, so it is stored in **group_vars/all.yaml** and applicable to all VTEPs.
 
