@@ -1,28 +1,28 @@
-L2/L3VNI w/ Spine Distributed Anycast Gateway (DAG).
+# General description #
 
-Please refer to the following cco guide for the EVPN DAG fabric functionality.
+In this directory there is a playbook for unprovisioning DAG (Distributed Anycast Gateway) for Campus EVPN Fabric.
 
-https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst9300/software/release/17-6/configuration_guide/vxlan/b_176_bgp_evpn_vxlan_9300_cg/configuring_evpn_vxlan_integrated_routing_and_bridging.html
+# Playbooks description #
 
-# playbooks description. #
-This example deletes a specific overlay configuration from all Leafs 
+**playbook_delete.yml:**
+- for partial/full deleting DAG related config
 
-```
-playbook_delete.yml:
-      delete dag overlay config. Please check the group_vars/all.yml
-
-```
-
-# group_vars/all.yml config description. #
 
 **OVERLAY CONFIGURATION**
+
+Overlay configuration is mostly the same on all VTEPs. There are some exceptions like unique interfaces/loopbacks or additonal configuration because of device role (Border) or design (for example CGW). For DAG EVPN/NVE related config is the same on all VTEPs, so it is stored in **group_vars/all.yaml** and applicable to all VTEPs.
+
+Elements which are mentioned in the file **group_vars/all.yaml** with action **delete** will be unconfigured.
+It is possible to delete only part of the configuration. Only elements, that are mentioned in the file, will be deleted.
+For example, if only vrf is mentioned, then only vrf will be deleted - not evi,svi etc.
+
+
 ```
-
 vrfs:
-  blue:             <===== overlay vrf to be deleted
-    action: delete  <===== delete action
+  blue:             <<< overlay vrf to be deleted
+    action: delete  <<< delete action
 
-vlans:              <===== vlans associated with the l2vni 
+vlans:              <<< vlans associated with the l2vni 
 #vrf blue vlans
  201:
   action: delete
@@ -33,7 +33,7 @@ vlans:              <===== vlans associated with the l2vni
  902:
   action: delete
 
-svis:               <===== svi interfaces associated with the l2vni in the vrf 
+svis:               <<< svi interfaces associated with the l2vni in the vrf 
 #vrf blue svi's
  201:
   action: delete
@@ -44,14 +44,14 @@ svis:               <===== svi interfaces associated with the l2vni in the vrf
  902:
   action: delete
 
-l2vpn_evi:          <===== evi associated with the l2vni 
+l2vpn_evi:          <<< evi associated with the l2vni 
   201:
     action: delete
 
   202:
     action: delete
 
-nve_interfaces:    <======= specific dag vnis (l2vni and l3vni) from the overlay topology
+nve_interfaces:    <<< specific dag vnis (l2vni and l3vni) from the overlay topology
   1:
     source_interface: 'Loopback1'
     vni:
@@ -64,4 +64,10 @@ nve_interfaces:    <======= specific dag vnis (l2vni and l3vni) from the overlay
         50902:
           action: delete
 ```
+# Full execution 
 
+To run the playbook for deleting the configuration :
+
+```
+ansible-playbook -i inventory.yaml playbook_delete.yml
+```
