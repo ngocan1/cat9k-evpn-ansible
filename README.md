@@ -6,7 +6,11 @@ Each directory has scripts for specific steps for EVPN provisioning:
 * **dag_add** DAG (Distributed Anycast Gateway) provisioning
 * **dag_delete** DAG selective unprovisioning
 
+Detailed instructions for running playbook you can find under each directory. 
+
 # Topology #
+
+Below you can find a topology which is used like an example.
 
 <img width="737" alt="ansible_lab_topology" src="https://user-images.githubusercontent.com/99259970/155182099-7e5d98f4-8e4e-4b01-96a8-30b9badc5be2.png">
 
