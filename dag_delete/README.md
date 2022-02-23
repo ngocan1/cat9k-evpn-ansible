@@ -16,7 +16,7 @@ Elements which are mentioned in the file **group_vars/all.yaml** with action **d
 It is possible to delete only part of the configuration. Only elements, that are mentioned in the file, will be deleted.
 For example, if only vrf is mentioned, then only vrf will be deleted - not evi,svi etc.
 
-
+Example of **group_vars/all.yaml:**
 ```
 vrfs:
   blue:             <<< overlay vrf to be deleted
