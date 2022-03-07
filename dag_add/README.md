@@ -294,7 +294,7 @@ There are 3 option to trigger partial execution of the configuration:
 Example
 
 ```
-ansible-playbook -i inventory.yaml playbook_overlay.yml -v -e "vrf_cli=['green']"
+ansible-playbook -i inventory.yaml playbook_incremental.yml -v -e "vrf_cli=['green']"
 ```
 
 ## Variables in partial_execution.yaml file
