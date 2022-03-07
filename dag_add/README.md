@@ -239,6 +239,34 @@ access_interfaces:
         - 201
         - 202
 ```
+# Full execution in DAG
+
+It is possible to run all playbooks by using the command (underlay configuration, overlay configuration and show commands):
+
+```
+ansible-playbook -i inventory.yaml playbook_all.yml
+```
+
+If it is needed to playbook separetly, it is could be run like this:
+
+### Underlay only
+
+```
+ansible-playbook -i inventory.yaml playbook_underlay.yml
+```
+
+### Overlay only
+
+```
+ansible-playbook -i inventory.yaml playbook_overlay.yml
+```
+
+### Overlay only
+
+```
+ansible-playbook -i inventory.yaml playbook_output.yml
+```
+
 # Partial execution in DAG
 
 Full information about the network configuration stored in group_vars/all.yml and host_vars/Leaf-xx.yml(Spine-xx.yml) files.
