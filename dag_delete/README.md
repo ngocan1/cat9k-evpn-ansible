@@ -70,5 +70,5 @@ nve_interfaces:    <<< specific dag vnis (l2vni and l3vni) from the overlay topo
 To run the playbook for deleting the configuration :
 
 ```
-ansible-playbook -i inventory.yaml playbook_delete.yml
+ansible-playbook -i inventory.yml playbook_delete.yml
 ```

@@ -244,7 +244,7 @@ access_interfaces:
 It is possible to run all playbooks by using the command (underlay configuration, overlay configuration and show commands):
 
 ```
-ansible-playbook -i inventory.yaml playbook_all.yml
+ansible-playbook -i inventory.yml playbook_all.yml
 ```
 
 If it is needed to playbook separetly, it is could be run like this:
@@ -252,19 +252,19 @@ If it is needed to playbook separetly, it is could be run like this:
 ### Underlay only
 
 ```
-ansible-playbook -i inventory.yaml playbook_underlay.yml
+ansible-playbook -i inventory.yml playbook_underlay.yml
 ```
 
 ### Overlay only
 
 ```
-ansible-playbook -i inventory.yaml playbook_overlay.yml
+ansible-playbook -i inventory.yml playbook_overlay.yml
 ```
 
 ### Overlay only
 
 ```
-ansible-playbook -i inventory.yaml playbook_output.yml
+ansible-playbook -i inventory.yml playbook_output.yml
 ```
 
 # Partial execution in DAG
@@ -322,7 +322,7 @@ There are 3 option to trigger partial execution of the configuration:
 Example
 
 ```
-ansible-playbook -i inventory.yaml playbook_incremental.yml -v -e "vrf_cli=['green']"
+ansible-playbook -i inventory.yml playbook_incremental.yml -v -e "vrf_cli=['green']"
 ```
 
 ## Variables in partial_execution.yaml file
